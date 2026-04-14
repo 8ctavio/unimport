@@ -67,6 +67,30 @@ describe('dedupeImports', () => {
     `)
   })
 
+  it('should respect negative priority', () => {
+    expect(dedupeImports(
+      [
+        {
+          name: 'foo',
+          from: 'module1',
+        },
+        {
+          name: 'foo',
+          from: 'module2',
+          priority: -1,
+        },
+      ],
+      warnFn,
+    )).toMatchInlineSnapshot(`
+      [
+        {
+          "from": "module1",
+          "name": "foo",
+        },
+      ]
+    `)
+  })
+
   it('should not dedupe disabled imports', () => {
     const imports = [
       {

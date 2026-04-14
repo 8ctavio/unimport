@@ -168,7 +168,10 @@ export function dedupeImports(imports: Import[], warn: (msg: string) => void) {
     // currImp and prevImp are duplicate imports
     const altName = encodeImportName(name)
     const prevImpComplement = deduped.get(altName)
-    const priorityDiff = (currImp.priority || 1) - Math.max(prevImp.priority || 1, prevImpComplement?.priority || 1)
+    const prevPriority = prevImpComplement
+      ? Math.max(prevImp.priority || 1, prevImpComplement.priority || 1)
+      : prevImp.priority || 1
+    const priorityDiff = (currImp.priority || 1) - prevPriority
     if (priorityDiff > 0) {
       deduped.delete(name)
       deduped.delete(altName)
